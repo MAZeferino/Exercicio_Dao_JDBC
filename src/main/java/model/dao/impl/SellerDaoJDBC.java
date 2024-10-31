@@ -47,6 +47,7 @@ public class SellerDaoJDBC implements SellerDao {
             }else{
                 throw new DBException("Unexpected error, no rows updated");
             }
+            System.out.println("Seller added to Database!");
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }finally {
@@ -70,6 +71,7 @@ public class SellerDaoJDBC implements SellerDao {
             ps.setInt(5, obj.getDepartment().getId());
             ps.setInt(6, obj.getId());
             ps.executeUpdate();
+            System.out.println("Seller Updated!");
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }finally {
@@ -86,6 +88,7 @@ public class SellerDaoJDBC implements SellerDao {
             );
             ps.setInt(1, id);
             ps.executeUpdate();
+            System.out.println("Seller removed to Database!");
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }finally {

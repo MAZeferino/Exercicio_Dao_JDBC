@@ -39,6 +39,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
             }else{
                 throw new DBException("Unexpected error, no rows updated");
             }
+            System.out.println("Department added to Database!");
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }finally {
@@ -48,12 +49,38 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void update(Department obj) {
-
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement(
+                    "UPDATE department " +
+                            "SET Name = ? " +
+                            "WHERE Id = ?"
+            );
+            ps.setString(1, obj.getName());
+            ps.executeUpdate();
+            System.out.println("Department Updated!");
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }finally {
+            DB.autoClose(ps);
+        }
     }
 
     @Override
     public void deleteById(Integer id) {
-
+        PreparedStatement ps = null;
+        try{
+            ps = conn.prepareStatement(
+                    "DELETE FROM department WHERE Id = ?"
+            );
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Department removed to Database!");
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }finally {
+            DB.autoClose(ps);
+        }
     }
 
     @Override
@@ -84,7 +111,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         ResultSet rs = null;
         try{
             ps = conn.prepareStatement(
-                    "SELECT department.* FROM department ORDER BY Name"
+                    "SELECT department.* FROM department ORDER BY Id"
             );
             rs = ps.executeQuery();
 
